@@ -1,18 +1,21 @@
-const html = document.querySelector('html')
-const focoBt = document.querySelector('.app__card-button--foco')
-const curtoBt = document.querySelector('.app__card-button--curto')
-const longoBt = document.querySelector('.app__card-button--longo')
-const banner = document.querySelector('.app__image')
-const titulo = document.querySelector('.app__title')
-const botoes = document.querySelectorAll('.app__card-button')
-const startPauseBt = document.querySelector('#start-pause')
-const musicaFocoInput = document.querySelector('#alternar-musica')
-const musica = new Audio('/sons/luna-rise-part-one.mp3')
+const html = document.querySelector('html');
+const focoBt = document.querySelector('.app__card-button--foco');
+const curtoBt = document.querySelector('.app__card-button--curto');
+const longoBt = document.querySelector('.app__card-button--longo');
+const banner = document.querySelector('.app__image');
+const titulo = document.querySelector('.app__title');
+const botoes = document.querySelectorAll('.app__card-button');
+const startPauseBt = document.querySelector('#start-pause');
+const musicaFocoInput = document.querySelector('#alternar-musica');
+const iniciarOuPausaBt = document.querySelector('#start-pause span');
+const botaoIcone = document.querySelector('.app__card-primary-button-icon');
+const tempoNaTela = document.querySelector('#timer');
+const musica = new Audio('/sons/luna-rise-part-one.mp3');
 const audioPlay = new Audio('/sons/play.wav');
 const audioPausa = new Audio('/sons/pause.mp3');
-const audioTempoFinalizado = new Audio('./sons/beep.mp3')
+const audioTempoFinalizado = new Audio('/sons/beep.mp3')
 
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
 
 musica.loop = true;
@@ -27,22 +30,26 @@ musicaFocoInput.addEventListener('change', () => {
 })
 
 focoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 1500;
     alterarContexto('foco');
-    focoBt.classList.add('active')
+    focoBt.classList.add('active');
 })
 
 curtoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 300;
     alterarContexto('descanso-curto');
-    curtoBt.classList.add('active')
+    curtoBt.classList.add('active');
 })
 
 longoBt.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 900;
     alterarContexto('descanso-longo');
-    longoBt.classList.add('active')
+    longoBt.classList.add('active');
 
 })
 
 function alterarContexto(contexto) {
+    mostrarTempo();
     botoes.forEach(function (contexto){
         contexto.classList.remove('active')
     })
@@ -67,13 +74,12 @@ function alterarContexto(contexto) {
 const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0) {
         audioTempoFinalizado.play()
-        zerar();
         alert('Tempo Finalizado!');
+        zerar();
         return
     }
     tempoDecorridoEmSegundos -= 1;
-    console.log('Temporizador: ' + tempoDecorridoEmSegundos);
-    console.log('Id: ' + intervaloId)
+    mostrarTempo();
 }
 
 startPauseBt.addEventListener('click', iniciarOuPausar)
@@ -84,11 +90,23 @@ function iniciarOuPausar() {
         zerar();
         return
     }
-    audioPlay();
+    audioPlay.play();
     intervaloId = setInterval(contagemRegressiva, 1000);
-}
+    iniciarOuPausaBt.textContent = "Pausar"
+    botaoIcone.setAttribute('src', '/imagens/pause.png');
 
 function zerar() {
     clearInterval(intervaloId)
+    iniciarOuPausaBt.textContent = "Começar"
+    botaoIcone.setAttribute('src', '/imagens/play_arrow.png');
     intervaloId = null
 }
+}
+
+function mostrarTempo() {
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000)
+    const tempoFormatado = tempo.toLocaleTimeString('pt-br', {minute: '2-digit', second: '2-digit'})
+    tempoNaTela.innerHTML = `${tempoFormatado}`
+}
+
+mostrarTempo()
