@@ -86,7 +86,6 @@ btnAdicionarTarefa.addEventListener("click", () => {
 
 formAdicionarTarefa.addEventListener("submit", (evento) => {
   evento.preventDefault();
-  const descricaoTarefa = textarea.value;
   const tarefa = {
     descricao: textarea.value,
   };

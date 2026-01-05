@@ -7,7 +7,7 @@ const titulo = document.querySelector(".app__title");
 const botoes = document.querySelectorAll(".app__card-button");
 const startPauseBt = document.querySelector("#start-pause");
 const musicaFocoInput = document.querySelector("#alternar-musica");
-const iniciarOuPausaBt = document.querySelector("#start-pause span");
+const iniciarOuPausarBt = document.querySelector("#start-pause span");
 const botaoIcone = document.querySelector(".app__card-primary-button-icon");
 const tempoNaTela = document.querySelector("#timer");
 const musica = new Audio("/sons/luna-rise-part-one.mp3");
@@ -35,7 +35,7 @@ focoBt.addEventListener("click", () => {
 });
 
 curtoBt.addEventListener("click", () => {
-  tempoDecorridoEmSegundos = 30;
+  tempoDecorridoEmSegundos = 300;
   alterarContexto("descanso-curto");
   curtoBt.classList.add("active");
 });
@@ -93,18 +93,20 @@ function iniciarOuPausar() {
     zerar();
     return;
   }
+
   audioPlay.play();
   intervaloId = setInterval(contagemRegressiva, 1000);
   iniciarOuPausaBt.textContent = "Pausar";
   botaoIcone.setAttribute("src", "/imagens/pause.png");
-
-  function zerar() {
-    clearInterval(intervaloId);
-    iniciarOuPausaBt.textContent = "Começar";
-    botaoIcone.setAttribute("src", "/imagens/play_arrow.png");
-    intervaloId = null;
-  }
 }
+
+function zerar() {
+  clearInterval(intervaloId);
+  iniciarOuPausaBt.textContent = "Começar";
+  botaoIcone.setAttribute("src", "/imagens/play_arrow.png");
+  intervaloId = null;
+}
+
 
 function mostrarTempo() {
   const tempo = new Date(tempoDecorridoEmSegundos * 1000);
