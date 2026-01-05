@@ -96,13 +96,13 @@ function iniciarOuPausar() {
 
   audioPlay.play();
   intervaloId = setInterval(contagemRegressiva, 1000);
-  iniciarOuPausaBt.textContent = "Pausar";
+  iniciarOuPausarBt.textContent = "Pausar";
   botaoIcone.setAttribute("src", "/imagens/pause.png");
 }
 
 function zerar() {
   clearInterval(intervaloId);
-  iniciarOuPausaBt.textContent = "Começar";
+  iniciarOuPausarBt.textContent = "Começar";
   botaoIcone.setAttribute("src", "/imagens/play_arrow.png");
   intervaloId = null;
 }
